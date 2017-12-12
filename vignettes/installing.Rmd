@@ -1,0 +1,15 @@
+
+# How to get the right version of python
+
+"In Linux the python version is always determined at the installation,
+essentially PythonInR always uses the python version you get when you type
+python into the terminal."
+
+
+
+```r
+Sys.setenv(USESPECIALPYTHONVERSION="python3.4")
+#OR
+#Sys.setenv(USESPECIALPYTHONVERSION="python3.6")
+install.packages("PythonInR")
+```
