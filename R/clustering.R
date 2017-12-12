@@ -1,17 +1,6 @@
 # Cluster analysis
 # см. Левшина  303
 
-#install.packages("cluster")
-#install.packages("pvclust")
-#install.packages("vcd")
-#install.packages("~/Downloads/Rling_1.0.tar.gz",type="source")
-library("cluster")
-library("pvclust")
-library("vcd")
-library("Rling")
-
-data(caus)
-
 #' Get a matrix between patterns organized in a data frame
 #' with only categorical variables.
 #' Expects the column identifying the patterns to be the first one
@@ -29,12 +18,12 @@ GetPatternMatrix <- function(mydf){
 }
 
 #' Compute the widths of the silhouttes of different clustering solutions
-#' @importFrom cluster cutree, silhouette
 #'
 #' @param myhc a hierarchically clustered object
 #' @param mydist a distance matrix on which the clustering was based
 #' @param maxclust maximum number of clusters
 #' 
+#' @importFrom cluster silhouette
 #' @export
 
 GetSilhouettes <- function(myhc, mydist, maxclust){
@@ -46,14 +35,13 @@ GetSilhouettes <- function(myhc, mydist, maxclust){
 }
 
 
-caus.bp <- GetPatternMatrix(caus)
-caus.dist <- dist(caus.bp,method="canberra")
-caus.hc <- hclust(caus.dist,method="ward.D2")
+#caus.bp <- GetPatternMatrix(caus)
+#caus.dist <- dist(caus.bp,method="canberra")
+#caus.hc <- hclust(caus.dist,method="ward.D2")
 #plot(caus.hc, hang=-1)
 #cut the tree in n clusters:
 #cutree(caus.hc, 2)
-
-GetSilhouettes(caus.hc, caus.dist,8)
+#GetSilhouettes(caus.hc, caus.dist,8)
 
 
 
