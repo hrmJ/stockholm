@@ -16,3 +16,19 @@ GetSilhouettes(myhc, mydist, maxclust)
 \description{
 Compute the widths of the silhouttes of different clustering solutions
 }
+\examples{
+
+#Example1:
+
+primery <- GetExamplesFromTextFiles("/home/juho/data/ira_txt/")
+primery.subset  <- primery[primery$adj != "ljubimyj",c("adj","participants","pattern","tonalnost")]
+primery.matrix <- GetPatternMatrix(primery.subset)
+primery.dist <- dist(primery.matrix, method="canberra")
+primery.hc <- hclust(primery.dist,method="ward.D2")
+plot(primery.hc)
+
+#Example2:
+
+
+
+}

@@ -67,6 +67,7 @@ def ConvertToList(path):
                 participants = re.sub(r"\s+"," ",participants)
                 participants = re.sub(r"(моя|moja)","moj",participants)
                 participants = re.sub(r"(мой)","moj",participants)
-                examples.append({"context":context,"adj":adj,"participants":participants.strip(),"year":year,"pattern":"[adj]","other":participants})
+                examples.append({"context":context,"adj":adj,"participants":participants.strip(),"year":year,"pattern":"[adj]","other":participants,
+                    "tonalnost": "agress" if "agress" in participants else "other" })
     return examples
 

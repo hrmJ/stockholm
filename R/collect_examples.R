@@ -3,8 +3,7 @@
 #'
 #' @param path the path to the folder including the examples
 #' @param txt_path path to the folder where the txt files will be saved
-#' @importFrom PythonInR pyExecfile
-#' @importFrom PythonInR pyCall
+#' @importFrom PythonInR pyExecfile @importFrom PythonInR pyCall
 #' @export
 
 ConvertExamplesToTextFiles <- function(path, txt_path){
@@ -37,6 +36,7 @@ GetExamplesFromTextFiles <- function(path){
     examples$participants <- gsub("tovaris1","tovarish",examples$participants)
     examples$participants <- gsub("dorogj","[adj]",examples$participants)
     examples$participants <- gsub("rodoj","[adj]",examples$participants)
+    examples$participants <- gsub("aggress","[adj]",examples$participants)
 
     #Separating patterns
     examples$pattern <- as.character(examples$pattern)
@@ -54,6 +54,7 @@ GetExamplesFromTextFiles <- function(path){
                     list(pat="substantiv plus \\[adj\\]",repl="subst [adj]"),
                     list(pat="\\[adj\\] plus substantive",repl="[adj] subst"),
                     list(pat="\\[adj\\] plus s plus moj",repl="[adj] subst moj"),
+                    list(pat="\\[adj\\] moj substantiv",repl="[adj] moj subst"),
                     list(pat="\\[adj\\] moj plus s",repl="[adj] moj subst"),
                     list(pat="moj \\[adj\\] plus substantiv", repl="moj [adj] subst"),
                     list(pat="moj \\[adj\\] substantiv", repl="moj [adj] subst"),
@@ -91,6 +92,23 @@ GetExamplesFromTextFiles <- function(path){
     examples$participants <- gsub(" uns "," und ",examples$participants)
     examples$participants[examples$participants==""] <- "?"
     examples$context <- as.character(examples$context)
+
+    #fix categories
+
+    fname <- system.file("data", "utshastniki.csv", package="stockholm")
+    fixes <- read.csv(fname)
+    for(idx in c(1:nrow(fixes))){
+        examples$participants[examples$participants==trimws(fixes[idx,1])] <- trimws(fixes[idx,2])
+    }
+
+    #clean up adjective names
+    examples$adj <- as.character(examples$adj)
+    examples$adj <- stri_trans_general(examples$adj,"cyrillic-latin")
+    examples$adj <- gsub("û","ju",examples$adj)
+    examples$adj <- as.factor(examples$adj)
+    examples <- examples[examples$participants!="X",]
+
+
     return(examples)
 }
 
