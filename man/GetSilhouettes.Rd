@@ -18,17 +18,51 @@ Compute the widths of the silhouttes of different clustering solutions
 }
 \examples{
 
-#Example1:
-
+# Example 1
 primery <- GetExamplesFromTextFiles("/home/juho/data/ira_txt/")
-primery.subset  <- primery[primery$adj != "ljubimyj",c("adj","participants","pattern","tonalnost")]
+primery.subset  <- primery[,c("adj","participants","pattern","tonalnost")]
 primery.matrix <- GetPatternMatrix(primery.subset)
 primery.dist <- dist(primery.matrix, method="canberra")
 primery.hc <- hclust(primery.dist,method="ward.D2")
+silhouette.widths <- GetSilhouettes(primery.hc, primery.dist,length(unique(primery.subset$adj))-1)
 plot(primery.hc)
 
-#Example2:
+# Example 2
+primery <- GetExamplesFromTextFiles("/home/juho/data/ira_txt/")
+primery.subset  <- primery[,c("adj","participants","pattern","tonalnost")]
+primery.subset$adj <- as.character(primery.subset$adj)
+primery.subset <- subset(primery.subset,adj != "ljubimyj")
+primery.subset$adj <- apply(primery.subset,1,function(r)gsub("\\\\[adj\\\\]",r["adj"],r["pattern"],))
+primery.subset  <- primery.subset[,c("adj","participants")]
+primery.matrix<-GetPatternMatrix(primery.subset)
+primery.dist <- dist(primery.matrix, method="canberra")
+primery.hc <- hclust(primery.dist,method="ward.D2")
+silhouette.widths <- GetSilhouettes(primery.hc, primery.dist,length(unique(primery.subset$adj))-1)
+plot(primery.hc)
 
 
+# Example 3
+primery <- GetExamplesFromTextFiles("/home/juho/data/ira_txt/")
+primery.subset  <- primery[,c("adj","participants","pattern","tonalnost")]
+primery.subset$adj <- apply(primery.subset,1,function(r)gsub("\\\\[adj\\\\]",r["adj"],r["pattern"],))
+primery.subset  <- primery.subset[,c("adj","participants")]
+primery.matrix<-GetPatternMatrix(primery.subset)
+primery.dist <- dist(primery.matrix, method="canberra")
+primery.hc <- hclust(primery.dist,method="ward.D2")
+silhouette.widths <- GetSilhouettes(primery.hc, primery.dist,length(unique(primery.subset$adj))-1)
+plot(primery.hc)
+
+
+# Example 4
+primery <- GetExamplesFromTextFiles("/home/juho/data/ira_txt/")
+primery.subset  <- primery[,c("adj","participants","pattern","tonalnost")]
+primery.subset$adj <- as.character(primery.subset$adj)
+primery.subset <- subset(primery.subset,adj != "ljubimyj")
+primery.subset$adj <- apply(primery.subset,1,function(r)gsub("\\\\[adj\\\\]",r["adj"],r["pattern"],))
+primery.matrix<-GetPatternMatrix(primery.subset)
+primery.dist <- dist(primery.matrix, method="canberra")
+primery.hc <- hclust(primery.dist,method="ward.D2")
+silhouette.widths <- GetSilhouettes(primery.hc, primery.dist,length(unique(primery.subset$adj))-1)
+plot(primery.hc)
 
 }

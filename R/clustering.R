@@ -13,10 +13,28 @@ GetPatternMatrix <- function(mydf){
         mydf[,colname] <- as.factor(mydf[,colname])
     }
 
-    patterns  <- setNames(lapply(levels(mydf[,1]),function(x,d)return(d[d[,1]==x,-1]),d=mydf),levels(mydf[,1]))
-    predictor.probs <- setNames(lapply(patterns, function(pat){
-           return(unlist(sapply(names(pat), function(pred.name, d)return(prop.table(table(d[[pred.name]]))),d=pat)))
-            }),names(patterns))
+    patterns  <- setNames(lapply(levels(mydf[,1]),function(x,d)return(as.data.frame(d[d[,1]==x,-1])),d=mydf),levels(mydf[,1]))
+    if(length(colnames(mydf)) < 3){
+        #If only one variable
+        name <- colnames(mydf)[2]
+        for(patname in names(patterns)){
+            colnames(patterns[[patname]]) <- name
+        }
+        predictor.probs <- setNames(lapply(patterns, function(pat){
+                props <- unlist(sapply(names(pat), function(pred.name, d)return(prop.table(table(d[[pred.name]]))),d=pat))
+                pnames <- paste(as.character(dimnames(props)[[2]]),as.vector(dimnames(props)[[1]]),sep=".")
+                props <- as.vector(props)
+                names(props) <- pnames
+                   return(props)
+                }),names(patterns))
+    }
+    else{
+        predictor.probs <- setNames(lapply(patterns, function(pat){
+                props <- unlist(sapply(names(pat), function(pred.name, d)return(prop.table(table(d[[pred.name]]))),d=pat))
+
+               return(props)
+                }),names(patterns))
+    }
 
     allnames <- c()
     for(this.predictor in predictor.probs){
@@ -55,20 +73,53 @@ GetPatternMatrix <- function(mydf){
 #' @export
 #' @examples
 #' 
-#' #Example1:
-#' 
+#' # Example 1
 #' primery <- GetExamplesFromTextFiles("/home/juho/data/ira_txt/")
 #' primery.subset  <- primery[,c("adj","participants","pattern","tonalnost")]
 #' primery.matrix <- GetPatternMatrix(primery.subset)
 #' primery.dist <- dist(primery.matrix, method="canberra")
 #' primery.hc <- hclust(primery.dist,method="ward.D2")
-#' GetSilhouettes(primery.hc, primery.dist,length(unique(primery.subset$adj))-1)
+#' silhouette.widths <- GetSilhouettes(primery.hc, primery.dist,length(unique(primery.subset$adj))-1)
 #' plot(primery.hc)
 #' 
-#' #Example2:
+#' # Example 2
+#' primery <- GetExamplesFromTextFiles("/home/juho/data/ira_txt/")
+#' primery.subset  <- primery[,c("adj","participants","pattern","tonalnost")]
+#' primery.subset$adj <- as.character(primery.subset$adj)
+#' primery.subset <- subset(primery.subset,adj != "ljubimyj")
+#' primery.subset$adj <- apply(primery.subset,1,function(r)gsub("\\[adj\\]",r["adj"],r["pattern"],))
+#' primery.subset  <- primery.subset[,c("adj","participants")]
+#' primery.matrix<-GetPatternMatrix(primery.subset)
+#' primery.dist <- dist(primery.matrix, method="canberra")
+#' primery.hc <- hclust(primery.dist,method="ward.D2")
+#' silhouette.widths <- GetSilhouettes(primery.hc, primery.dist,length(unique(primery.subset$adj))-1)
+#' plot(primery.hc)
 #' 
 #' 
+#' # Example 3
+#' primery <- GetExamplesFromTextFiles("/home/juho/data/ira_txt/")
+#' primery.subset  <- primery[,c("adj","participants","pattern","tonalnost")]
+#' primery.subset$adj <- apply(primery.subset,1,function(r)gsub("\\[adj\\]",r["adj"],r["pattern"],))
+#' primery.subset  <- primery.subset[,c("adj","participants")]
+#' primery.matrix<-GetPatternMatrix(primery.subset)
+#' primery.dist <- dist(primery.matrix, method="canberra")
+#' primery.hc <- hclust(primery.dist,method="ward.D2")
+#' silhouette.widths <- GetSilhouettes(primery.hc, primery.dist,length(unique(primery.subset$adj))-1)
+#' plot(primery.hc)
 #' 
+#' 
+#' # Example 4
+#' primery <- GetExamplesFromTextFiles("/home/juho/data/ira_txt/")
+#' primery.subset  <- primery[,c("adj","participants","pattern","tonalnost")]
+#' primery.subset$adj <- as.character(primery.subset$adj)
+#' primery.subset <- subset(primery.subset,adj != "ljubimyj")
+#' primery.subset$adj <- apply(primery.subset,1,function(r)gsub("\\[adj\\]",r["adj"],r["pattern"],))
+#' primery.matrix<-GetPatternMatrix(primery.subset)
+#' primery.dist <- dist(primery.matrix, method="canberra")
+#' primery.hc <- hclust(primery.dist,method="ward.D2")
+#' silhouette.widths <- GetSilhouettes(primery.hc, primery.dist,length(unique(primery.subset$adj))-1)
+#' plot(primery.hc)
+#'
 GetSilhouettes <- function(myhc, mydist, maxclust){
     silh.vector <- sapply(2:maxclust, function(thisn){
                             return(summary(silhouette(cutree(myhc, k=thisn),mydist))$avg.width)
