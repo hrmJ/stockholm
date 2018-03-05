@@ -44,7 +44,7 @@ def ConvertToList(path):
         adj = papka[papka.rfind("/")+1:].lower()
         for txt_file in glob.glob(papka + "/*"):
             fname = txt_file[txt_file.rfind("/")+1:].replace(".txt","")
-            pat = re.compile(r"\s*(lubim|mil|dorog|rodn|любим|мил|дорог|родн)(ie|ой|ый|ая|ые|oj|aja|yje|ye|oe|y1|yj)\s*",re.IGNORECASE)
+            pat = re.compile(r"\s*(lubim|mil|dorog|rodn|любим|мил|дорог|родн)(ie|ой|ый|ая|ые|oj|aja|yje|ye|oe|y1|yj|yyj)\s*",re.IGNORECASE)
             participants = pat.sub(" [adj] ",fname).strip().replace(" vok","").replace("vok ","").replace("vokativ"," ")
             participants = participants.replace("vokativ"," ")
             participants = participants.replace(" rodoj"," [adj]")
@@ -67,7 +67,9 @@ def ConvertToList(path):
                 participants = re.sub(r"\s+"," ",participants)
                 participants = re.sub(r"(моя|moja)","moj",participants)
                 participants = re.sub(r"(мой)","moj",participants)
+                #print(participants)
                 examples.append({"context":context,"adj":adj,"participants":participants.strip(),"year":year,"pattern":"[adj]","other":participants,
                     "tonalnost": "agress" if "agress" in participants else "other" })
     return examples
 
+#ConvertToList("/home/juho/data/stockholm/txt/")

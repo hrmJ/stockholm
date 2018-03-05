@@ -74,51 +74,51 @@ GetPatternMatrix <- function(mydf){
 #' @examples
 #' 
 #' # Example 1
-#' primery <- GetExamplesFromTextFiles("/home/juho/data/ira_txt/")
-#' primery.subset  <- primery[,c("adj","participants","pattern","tonalnost")]
-#' primery.matrix <- GetPatternMatrix(primery.subset)
-#' primery.dist <- dist(primery.matrix, method="canberra")
-#' primery.hc <- hclust(primery.dist,method="ward.D2")
-#' silhouette.widths <- GetSilhouettes(primery.hc, primery.dist,length(unique(primery.subset$adj))-1)
-#' plot(primery.hc)
+#' bolshaja <- readRDS("tablica_?_?_2018.rds")
+#' bolshaja.subset  <- bolshaja[,c("adj","participants","pattern","tonalnost")]
+#' bolshaja.matrix <- GetPatternMatrix(bolshaja.subset)
+#' bolshaja.dist <- dist(bolshaja.matrix, method="canberra")
+#' bolshaja.hc <- hclust(bolshaja.dist,method="ward.D2")
+#' silhouette.widths <- GetSilhouettes(bolshaja.hc, bolshaja.dist,length(unique(bolshaja.subset$adj))-1)
+#' plot(bolshaja.hc)
 #' 
 #' # Example 2
-#' primery <- GetExamplesFromTextFiles("/home/juho/data/ira_txt/")
-#' primery.subset  <- primery[,c("adj","participants","pattern","tonalnost")]
-#' primery.subset$adj <- as.character(primery.subset$adj)
-#' primery.subset <- subset(primery.subset,adj != "ljubimyj")
-#' primery.subset$adj <- apply(primery.subset,1,function(r)gsub("\\[adj\\]",r["adj"],r["pattern"],))
-#' primery.subset  <- primery.subset[,c("adj","participants")]
-#' primery.matrix<-GetPatternMatrix(primery.subset)
-#' primery.dist <- dist(primery.matrix, method="canberra")
-#' primery.hc <- hclust(primery.dist,method="ward.D2")
-#' silhouette.widths <- GetSilhouettes(primery.hc, primery.dist,length(unique(primery.subset$adj))-1)
-#' plot(primery.hc)
+#' bolshaja <- readRDS("tablica_?_?_2018.rds")
+#' bolshaja.subset  <- bolshaja[,c("adj","participants","pattern","tonalnost")]
+#' bolshaja.subset$adj <- as.character(bolshaja.subset$adj)
+#' bolshaja.subset <- subset(bolshaja.subset,adj != "ljubimyj")
+#' bolshaja.subset$adj <- apply(bolshaja.subset,1,function(r)gsub("\\[adj\\]",r["adj"],r["pattern"],))
+#' bolshaja.subset  <- bolshaja.subset[,c("adj","participants")]
+#' bolshaja.matrix<-GetPatternMatrix(bolshaja.subset)
+#' bolshaja.dist <- dist(bolshaja.matrix, method="canberra")
+#' bolshaja.hc <- hclust(bolshaja.dist,method="ward.D2")
+#' silhouette.widths <- GetSilhouettes(bolshaja.hc, bolshaja.dist,length(unique(bolshaja.subset$adj))-1)
+#' plot(bolshaja.hc)
 #' 
 #' 
 #' # Example 3
-#' primery <- GetExamplesFromTextFiles("/home/juho/data/ira_txt/")
-#' primery.subset  <- primery[,c("adj","participants","pattern","tonalnost")]
-#' primery.subset$adj <- apply(primery.subset,1,function(r)gsub("\\[adj\\]",r["adj"],r["pattern"],))
-#' primery.subset  <- primery.subset[,c("adj","participants")]
-#' primery.matrix<-GetPatternMatrix(primery.subset)
-#' primery.dist <- dist(primery.matrix, method="canberra")
-#' primery.hc <- hclust(primery.dist,method="ward.D2")
-#' silhouette.widths <- GetSilhouettes(primery.hc, primery.dist,length(unique(primery.subset$adj))-1)
-#' plot(primery.hc)
+#' bolshaja <- readRDS("tablica_?_?_2018.rds")
+#' bolshaja.subset  <- bolshaja[,c("adj","participants","pattern","tonalnost")]
+#' bolshaja.subset$adj <- apply(bolshaja.subset,1,function(r)gsub("\\[adj\\]",r["adj"],r["pattern"],))
+#' bolshaja.subset  <- bolshaja.subset[,c("adj","participants")]
+#' bolshaja.matrix<-GetPatternMatrix(bolshaja.subset)
+#' bolshaja.dist <- dist(bolshaja.matrix, method="canberra")
+#' bolshaja.hc <- hclust(bolshaja.dist,method="ward.D2")
+#' silhouette.widths <- GetSilhouettes(bolshaja.hc, bolshaja.dist,length(unique(bolshaja.subset$adj))-1)
+#' plot(bolshaja.hc)
 #' 
 #' 
 #' # Example 4
-#' primery <- GetExamplesFromTextFiles("/home/juho/data/ira_txt/")
-#' primery.subset  <- primery[,c("adj","participants","pattern","tonalnost")]
-#' primery.subset$adj <- as.character(primery.subset$adj)
-#' primery.subset <- subset(primery.subset,adj != "ljubimyj")
-#' primery.subset$adj <- apply(primery.subset,1,function(r)gsub("\\[adj\\]",r["adj"],r["pattern"],))
-#' primery.matrix<-GetPatternMatrix(primery.subset)
-#' primery.dist <- dist(primery.matrix, method="canberra")
-#' primery.hc <- hclust(primery.dist,method="ward.D2")
-#' silhouette.widths <- GetSilhouettes(primery.hc, primery.dist,length(unique(primery.subset$adj))-1)
-#' plot(primery.hc)
+#' bolshaja <- readRDS("tablica_?_?_2018.rds")
+#' bolshaja.subset  <- bolshaja[,c("adj","participants","pattern","tonalnost")]
+#' bolshaja.subset$adj <- as.character(bolshaja.subset$adj)
+#' bolshaja.subset <- subset(bolshaja.subset,adj != "ljubimyj")
+#' bolshaja.subset$adj <- apply(bolshaja.subset,1,function(r)gsub("\\[adj\\]",r["adj"],r["pattern"],))
+#' bolshaja.matrix<-GetPatternMatrix(bolshaja.subset)
+#' bolshaja.dist <- dist(bolshaja.matrix, method="canberra")
+#' bolshaja.hc <- hclust(bolshaja.dist,method="ward.D2")
+#' silhouette.widths <- GetSilhouettes(bolshaja.hc, bolshaja.dist,length(unique(bolshaja.subset$adj))-1)
+#' plot(bolshaja.hc)
 #'
 GetSilhouettes <- function(myhc, mydist, maxclust){
     silh.vector <- sapply(2:maxclust, function(thisn){

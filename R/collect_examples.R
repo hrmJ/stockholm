@@ -13,13 +13,12 @@ ConvertExamplesToTextFiles <- function(path, txt_path){
     pyCall("ConvertToTxt", c(path, txt_path))
 }
 
-#' Collect all examples from the text files
+#' Collect all examples from the text files and return them as a data frame (unprocessed)
 #'
 #' @param path path to the folder where the txt files will be saved 
 #' @return a data frame consisting of all the examples in the specified folder
 #' @importFrom PythonInR pyExecfile
 #' @importFrom PythonInR pyCall
-#' @importFrom stringi stri_trans_general
 #' @export
 
 GetExamplesFromTextFiles <- function(path){
@@ -28,6 +27,21 @@ GetExamplesFromTextFiles <- function(path){
     ex.list <- pyCall("ConvertToList", path)
     examples <- do.call(rbind.data.frame, ex.list)
     colnames(examples) <- names(ex.list[[1]])
+    return( examples )
+}
+
+
+#' Process the collected examples, add variables etc
+#'
+#' Here we try to separate the participiants of the speech situation, the
+#' pattern (whether there is a pronoun etc ) based on the information
+#' originally present in the text file
+#'
+#' @param examples a data frame produced by GetExamplesFromTextFiles
+#' @return a data frame consisting of all the examples in the specified folder
+#' @importFrom stringi stri_trans_general
+#' @export
+ProcessExamples <- function(examples){
     examples$participants <- stri_trans_general(examples$participants,"cyrillic-latin")
     examples$participants <- gsub("â","ja",examples$participants)
     examples$participants <- gsub("û","ju",examples$participants)
@@ -65,18 +79,22 @@ GetExamplesFromTextFiles <- function(path){
                     list(pat="nomen \\[adj\\]", repl="nomen [adj]"),
                     list(pat="\\[adj\\] nomen", repl="[adj] nomen"),
                     list(pat="nomen plus \\[adj\\]", repl="nomen [adj]"),
+
                     list(pat="\\[adj]\\s?\\+n",repl="[adj] nomen"),
-                    list(pat="\\[adj\\] n",repl="[adj] nomen"),
+                    list(pat="\\[adj\\] n\\s*$",repl="[adj] nomen"), #NOTE: watch out for adj] n*reznakomye**
+
                     list(pat="moj \\[adj\\]",repl="moj [adj]"),
                     list(pat="miloe n",repl="[adj] nomen"),
                     list(pat="moj [adj] niania",repl="moj [adj] subst"),
                     list(pat="moj [adj] njanja",repl="moj [adj] subst"),
                     list(pat="\\[adj\\] moja?",repl="[adj] moj")
                     )
+
     for(thispat in allpats){
         examples$pattern[grepl(thispat$pat,examples$participants)] <- thispat$repl
         examples$participants <- gsub(thispat$pat," ",examples$participants)
     }
+
 
     examples$pattern <- as.factor(examples$pattern)
     #Cleaning up
@@ -92,6 +110,7 @@ GetExamplesFromTextFiles <- function(path){
     examples$participants <- gsub("(unbekannt1|unbekannte)","unbekannt",examples$participants)
     examples$participants <- gsub(" uns "," und ",examples$participants)
     examples$participants[examples$participants==""] <- "?"
+    examples$participants[examples$participants=="rodsvenniki"] <- "rodstvenniki"
     examples$context <- as.character(examples$context)
 
     #fix categories

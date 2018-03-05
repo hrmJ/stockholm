@@ -2,7 +2,7 @@
 % Please edit documentation in R/collect_examples.R
 \name{GetExamplesFromTextFiles}
 \alias{GetExamplesFromTextFiles}
-\title{Collect all examples from the text files}
+\title{Collect all examples from the text files and return them as a data frame (unprocessed)}
 \usage{
 GetExamplesFromTextFiles(path)
 }
@@ -13,5 +13,5 @@ GetExamplesFromTextFiles(path)
 a data frame consisting of all the examples in the specified folder
 }
 \description{
-Collect all examples from the text files
+Collect all examples from the text files and return them as a data frame (unprocessed)
 }
