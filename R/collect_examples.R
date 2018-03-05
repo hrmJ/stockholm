@@ -3,8 +3,6 @@
 #'
 #' @param path the path to the folder including the examples
 #' @param txt_path path to the folder where the txt files will be saved
-#' @importFrom PythonInR pyExecfile 
-#' @importFrom PythonInR pyCall
 #' @export
 
 ConvertExamplesToTextFiles <- function(path, txt_path){
@@ -17,8 +15,6 @@ ConvertExamplesToTextFiles <- function(path, txt_path){
 #'
 #' @param path path to the folder where the txt files will be saved 
 #' @return a data frame consisting of all the examples in the specified folder
-#' @importFrom PythonInR pyExecfile
-#' @importFrom PythonInR pyCall
 #' @export
 
 GetExamplesFromTextFiles <- function(path){
