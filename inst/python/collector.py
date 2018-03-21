@@ -53,6 +53,8 @@ def ConvertToList(path):
                 file_content = f.read()
             contexts = re.split(r"\n{2,}", file_content)
             for idx, context in enumerate(contexts):
+                if idx == 0:
+                    continue
                 try:
                     year = re.search(r"\((\d+)[\d-]*\)\s*\]",context).group(1)
                 except AttributeError:
@@ -72,4 +74,4 @@ def ConvertToList(path):
                     "tonalnost": "agress" if "agress" in participants else "other" })
     return examples
 
-#ConvertToList("/home/juho/data/stockholm/txt/")
+#z=ConvertToList("/home/juho/data/stockholm/txt/")
