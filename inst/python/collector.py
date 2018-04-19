@@ -75,3 +75,4 @@ def ConvertToList(path):
     return examples
 
 #z=ConvertToList("/home/juho/data/stockholm/txt/")
+ConvertToTxt("/home/juho/data/stockholm/aggr/word/","/home/juho/data/stockholm/aggr/txt/")
