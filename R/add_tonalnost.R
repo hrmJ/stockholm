@@ -45,7 +45,13 @@ AddTonalnost <- function(path, temp=F){
          }
     }
     bolshaja.temp[nchar(bolshaja.temp$participants)>50, "participants"]  <- "?"
+    bolshaja.temp$participants[bolshaja.temp$participants=="lubovniki"]  <- "vlublennye"
+    bolshaja.temp$participants[grepl("В гробу я видал вашего Гиппократа вместе с его клятвой. Да ваш",bolshaja.temp$context)] <- "znakom druz kolleg"
+    bolshaja.temp$participants[grepl("Не знаю никакого гинеколога. А Нугзара год не видел",bolshaja.temp$context)] <- "snizu vverh"
+    bolshaja.temp$participants[grepl("Он повернул к Левинсону бритую",bolshaja.temp$context)] <- "znakom druz kolleg"
+
     return (bolshaja.temp)
+
 
 }
 
