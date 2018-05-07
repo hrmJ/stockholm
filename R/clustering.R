@@ -9,6 +9,7 @@
 #' @export 
 
 GetPatternMatrix <- function(mydf){
+    mydf<-as.data.frame(mydf)
     for(colname in colnames(mydf)){
         mydf[,colname] <- as.factor(mydf[,colname])
     }
