@@ -1,0 +1,47 @@
+---
+title: "Как изменить категории"
+author: "Juho Härme"
+date: "`r Sys.Date()`"
+output: 
+    html_document:
+        dev: svg
+---
+
+
+Изменить названия категорий на самом деле нетрудно. Поступайте вот так:
+
+```{r}
+
+bolshaja$participants[bolshaja$participants == 'zveri'] <- 'zhivotnye'
+bolshaja$participants[bolshaja$participants == 'prochee'] <- 'neopoznannye'
+
+```
+
+то есть, `bolshaja$participants[bolshaja$participants == 'БЫВШЕЕ НАЗВАНИЕ'] <- 'НОВОЕ НАЗВАНИЕ'`.
+
+
+Эти команды лучше написать сразу после первого упоминания библиотеки 'stockholm'.
+
+Таким образом, например код для совершения CA станет вот таким:
+
+
+
+```{r}
+
+library(stockholm)
+
+
+# novoje --->
+bolshaja$participants[bolshaja$participants == 'zveri'] <- 'zhivotnye'
+bolshaja$participants[bolshaja$participants == 'prochee'] <- 'neopoznannye'
+# <------------------
+
+bolshaja$otdelno  <- apply(bolshaja,1,function(r)gsub("\\[adj\\]",r[["adj"]],r[["pattern"]])) 
+bolshaja_moj <- subset(bolshaja, grepl("moj",pattern))
+bolshaja_bez_moj <- subset(bolshaja, !grepl("moj",pattern))
+tablica_s_absoljutnymi_tsiframi_moj <- table(bolshaja_moj$participants, bolshaja_moj$otdelno)
+tablica_s_absoljutnymi_tsiframi_bez_moj <- table(bolshaja_bez_moj$participants, bolshaja_bez_moj$otdelno)
+library(ca)
+```
+
+
