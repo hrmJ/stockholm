@@ -8,9 +8,9 @@ output:
 ---
 
 
-# Небольшой (и не очень организованный) набор инструкций
+Небольшой (и не очень организованный) набор инструкций
 
-- [Ctree]('vignettes/ctree.html')
-- [Как изменить названия категорий]('vignettes/categories.html')
+- [Ctree](vignettes/ctree.html)
+- [Как изменить названия категорий](vignettes/categories.html)
 
 

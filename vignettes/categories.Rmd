@@ -1,5 +1,5 @@
 ---
-title: "Как изменить категории"
+title: "Как изменить названия категорий"
 author: "Juho Härme"
 date: "`r Sys.Date()`"
 output: 
