@@ -28,7 +28,7 @@ PrintProfilePlot <- function(abs_table, adjectives, min_pc=4){
     ot <- abs_table %>% 
         prop.table(.,2) %>% 
         round(4)*100 
-    ot <- as_tibble(ot)
+    ot <- ot %>% as.data.frame  %>%  as_tibble
 
     return (ot  %>% filter(Var2 %in% adjectives) %>% 
         ggplot(.,aes(x=Var2,y=n,fill=Var1)) + 
