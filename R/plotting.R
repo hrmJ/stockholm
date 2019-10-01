@@ -34,7 +34,7 @@ PrintProfilePlot <- function(abs_table, adjectives, min_pc=4){
         ggplot(.,aes(x=Var2,y=Freq,fill=Var1)) + 
         coord_flip() + 
             geom_bar(stat="identity") + 
-         geom_text(aes(label=ifelse(n >= 4, paste0(Var1,"=\n",  n,"%"),"")), position=position_stack(vjust=0.5), colour="white"))
+         geom_text(aes(label=ifelse(Freq >= 4, paste0(Var1,"=\n",  Freq,"%"),"")), position=position_stack(vjust=0.5), colour="white"))
 
 }
 
