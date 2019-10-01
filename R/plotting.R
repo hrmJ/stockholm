@@ -31,7 +31,7 @@ PrintProfilePlot <- function(abs_table, adjectives, min_pc=4){
     ot <- ot %>% as.data.frame  %>%  as_tibble
 
     return (ot  %>% dplyr::filter(Var2 %in% adjectives) %>% 
-        ggplot(.,aes(x=Var2,y=n,fill=Var1)) + 
+        ggplot(.,aes(x=Var2,y=Freq,fill=Var1)) + 
         coord_flip() + 
             geom_bar(stat="identity") + 
          geom_text(aes(label=ifelse(n >= 4, paste0(Var1,"=\n",  n,"%"),"")), position=position_stack(vjust=0.5), colour="white"))
