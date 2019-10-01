@@ -11,7 +11,7 @@
 #' @export 
 #' @examples
 #' 
-#' # Example 1
+#' # Example 1:
 #' 
 #' library(stockholm)
 #' bolshaja$otdelno  <- apply(bolshaja,1,function(r)gsub("\\[adj\\]",r[["adj"]],r[["pattern"]])) 
