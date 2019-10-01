@@ -30,7 +30,7 @@ PrintProfilePlot <- function(abs_table, adjectives, min_pc=4){
         round(4)*100 
     ot <- ot %>% as.data.frame  %>%  as_tibble
 
-    return (ot  %>% filter(Var2 %in% adjectives) %>% 
+    return (ot  %>% dplyr::filter(Var2 %in% adjectives) %>% 
         ggplot(.,aes(x=Var2,y=n,fill=Var1)) + 
         coord_flip() + 
             geom_bar(stat="identity") + 
