@@ -50,3 +50,23 @@ PrintProfilePlot <- function(abs_table, adjectives, min_pc=4, vertical=FALSE){
 }
 
 
+#' Returns a table filtered by participants
+#'
+#'
+#' @param dannyje bolshaja, bolshaja_moj, bolshaja_bez_moj etc..
+#' @param spisok_utshastnikov list of participants to include in the table
+#'
+#'
+#' @export 
+#' @examples
+#' 
+#' # Example 1:
+#' 
+#' tablitsa  <-  sozdai_tablitsa_s_utshastnikamki(bolshaja_bez_moj, c('roditeli deti', 'deti roditeli'))
+#' PrintProfilePlot(tablitsa ,c("dorogoj", "milyj", "rodnoj", "lubimyj"), vertical=T) 
+#' 
+#' 
+sozdai_tablitsa_s_utshastnikamki <- function(dannyje, spisok_utshastnikov){
+  subsetted <- subset(dannyje, participants %in% spisok_utshastnikov)
+  return(table(subsetted$participants, subsetted$otdelno))
+}
