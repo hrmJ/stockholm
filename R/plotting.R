@@ -80,7 +80,6 @@ sozdai_tablitsa_s_utshastnikamki <- function(dannyje, spisok_utshastnikov){
 #' @param this_adj the adjective in question (dorogoj, milyj...)
 #'
 #'
-#' @export 
 #' @examples
 #' 
 #' # Example 1:
@@ -88,6 +87,8 @@ sozdai_tablitsa_s_utshastnikamki <- function(dannyje, spisok_utshastnikov){
 #' tablitsa  <-  sozdai_tablitsa_s_prilagatelnym(bolshaja, 'dorogoj')
 #' 
 #' 
+#' @export 
+
 sozdai_tablitsa_s_prilagatelnym <- function(dannyje, this_adj){
   subsetted <- subset(bolshaja, adj==this_adj)
   return(table(subsetted$participants, subsetted$otdelno))
