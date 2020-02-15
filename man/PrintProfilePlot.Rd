@@ -4,7 +4,7 @@
 \alias{PrintProfilePlot}
 \title{Prints a plot comparing the profiles of different adjectives}
 \usage{
-PrintProfilePlot(abs_table, adjectives, min_pc = 4)
+PrintProfilePlot(abs_table, adjectives, min_pc = 4, vertical = FALSE)
 }
 \arguments{
 \item{abs_table}{cross-tabulated table with absolute numbers}
@@ -12,13 +12,15 @@ PrintProfilePlot(abs_table, adjectives, min_pc = 4)
 \item{adjectives}{a vector consisting of th adjectives / constructions you want to compare}
 
 \item{min_pc}{minimum percentage value to be printed as text on the plot}
+
+\item{vertical}{wether or not to output the text labels vertically}
 }
 \description{
 Prints a plot comparing the profiles of different adjectives
 }
 \examples{
 
-# Example 1
+# Example 1:
 
 library(stockholm)
 bolshaja$otdelno  <- apply(bolshaja,1,function(r)gsub("\\\\[adj\\\\]",r[["adj"]],r[["pattern"]])) 
