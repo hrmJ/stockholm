@@ -388,32 +388,6 @@ library(dplyr)
 library(remotes)
 install_github(&quot;hrmj/stockholm&quot;, upgrade=T, dependencies = FALSE, force=T) </code></pre>
 <pre><code>## Downloading GitHub repo hrmj/stockholm@master</code></pre>
-<pre><code>##   
-   checking for file ‘/tmp/Rtmp6evxPc/remotes2cb892e676f20/hrmJ-stockholm-c7bf253/DESCRIPTION’ ...
-  
-✔  checking for file ‘/tmp/Rtmp6evxPc/remotes2cb892e676f20/hrmJ-stockholm-c7bf253/DESCRIPTION’
-## 
-  
-─  preparing ‘stockholm’:
-## 
-  
-   checking DESCRIPTION meta-information ...
-  
-✔  checking DESCRIPTION meta-information
-## 
-  
-─  checking for LF line-endings in source and make files and shell scripts
-## 
-  
-─  checking for empty or unneeded directories
-## ─  looking to see if a ‘data/datalist’ file should be added
-## 
-  
-─  building ‘stockholm_0.0.0.9000.tar.gz’
-## 
-  
-   
-## </code></pre>
 <pre><code>## Installing package into &#39;/home/juhoharme/R/x86_64-redhat-linux-gnu-library/3.6&#39;
 ## (as &#39;lib&#39; is unspecified)</code></pre>
 <p><strong>(Только) если установка не получается</strong>, нужно вручную отправить следующие строки в R:</p>
@@ -464,13 +438,8 @@ sozdai_barplot_s_prilagatelnym &lt;- function(dannyje, this_adj, spisok_utshastn
 <p>У нас есть <code>tablica_otdelno</code>, где вся информация. Но пока не смогла сделать так, чтобы было так: 13 рядov- с participans, 3 kolonki:dorogoj; dorogoj moj; moj dorogoj. Наверно, надо сделать table (), но не знаю, ка правильно задать данные внутри скобок.Это что-то как ”дорогой отдельно”.</p>
 </blockquote>
 <p>Обычные подготовительные шаги:</p>
-<pre class="r"><code>library(stockholm)</code></pre>
-<pre><code>## 
-## Attaching package: &#39;stockholm&#39;</code></pre>
-<pre><code>## The following object is masked _by_ &#39;.GlobalEnv&#39;:
-## 
-##     sozdai_barplot_s_prilagatelnym</code></pre>
-<pre class="r"><code>bolshaja$participants[bolshaja$participants==&#39;zveri&#39;]&lt;-&#39;zhivotnye&#39;
+<pre class="r"><code>library(stockholm)
+bolshaja$participants[bolshaja$participants==&#39;zveri&#39;]&lt;-&#39;zhivotnye&#39;
 bolshaja$participants[bolshaja$participants==&#39;prochee&#39;]&lt;-&#39;neopoznannye&#39;
 bolshaja_moj&lt;-subset(bolshaja, grepl(&quot;moj&quot;,pattern))
 bolshaja_bez_moj&lt;-subset(bolshaja,!grepl(&quot;moj&quot;,pattern))</code></pre>

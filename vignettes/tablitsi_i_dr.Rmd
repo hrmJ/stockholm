@@ -7,7 +7,7 @@
 
 **если установка не получается**, см. ниже
 
-```{r}
+```{r, results='hide'}
 library(ggplot2)
 library(dplyr)
 library(remotes)
