@@ -1,0 +1,127 @@
+Инструкции 15.2.2020
+====================
+
+## Установка
+
+Писал новые функции, поэтому нужно было бы переустановить библиотеку:
+
+**если установка не получается**, см. ниже
+
+```{r}
+library(ggplot2)
+library(dplyr)
+library(remotes)
+install_github("hrmj/stockholm", upgrade=T, dependencies = FALSE, force=T) 
+```
+
+**(Только) если установка не получается**, нужно вручную отправить следующие строки в R:
+
+```{r}
+
+setTheme <- function(thispl, y_axis_all_percents){
+  pl <- thispl + 
+         coord_flip( ) + 
+         theme(axis.text.x = element_text(angle=90, hjust=1))
+  if(y_axis_all_percents){
+     pl <- pl + scale_y_continuous(limits=c(0,100))
+  }
+  return(pl)
+}
+
+sozdai_barplot_s_prilagatelnym <- function(dannyje, this_adj, spisok_utshastnikov = c(), protsenty = F, freqlabels = F, nlabels = F, y_axis_all_percents = F){
+  tab <- bolshaja %>% filter(adj == this_adj)
+  if(length(spisok_utshastnikov) > 0){
+    tab <- tab %>% filter(participants %in% spisok_utshastnikov)
+  }
+  tab <- tab %>% count(participants, otdelno) %>%
+    group_by(otdelno) %>%
+    mutate(freq = n / sum(n) *100) %>%
+    ungroup %>%
+    arrange(desc(freq))
+  if(protsenty){
+    pl <- tab %>% ggplot(aes(x = participants, y=freq) ) 
+  }
+  else{
+    pl <- tab %>% ggplot(aes(x = participants, y=n) )
+  }
+
+  pl <- pl +geom_bar(stat='identity') + facet_wrap(~otdelno)  
+
+  if(nlabels && freqlabels){
+    pl <- pl  + geom_text(aes(label=paste0("n=",n," (",round(freq,1)," %)")),  hjust=-0.3)
+  }
+  else if(freqlabels){
+    pl <- pl  + geom_text(aes(label=paste0(round(freq,1), ' %')),  hjust=-0.3)
+  }
+  else if(nlabels){
+    pl <- pl  + geom_text(aes(label=paste0('n=',n)),  hjust=-0.3)
+  }
+  return (setTheme(pl, y_axis_all_percents))
+}
+
+```
+
+## Барплоты
+
+>У нас есть `tablica_otdelno`, где вся информация.  Но пока не смогла сделать
+>так, чтобы было так: 13 рядov- с participans, 3 kolonki:dorogoj; dorogoj moj;
+>moj dorogoj.  Наверно, надо сделать table (), но не знаю, ка правильно задать
+>данные внутри скобок.Это что-то как ”дорогой отдельно”.
+
+Обычные подготовительные шаги:
+
+```{r}
+library(stockholm)
+bolshaja$participants[bolshaja$participants=='zveri']<-'zhivotnye'
+bolshaja$participants[bolshaja$participants=='prochee']<-'neopoznannye'
+bolshaja_moj<-subset(bolshaja, grepl("moj",pattern))
+bolshaja_bez_moj<-subset(bolshaja,!grepl("moj",pattern))
+```
+
+Потом попробуем создать различные барплоты:
+
+
+```{r}
+# samyj prostoi:
+sozdai_barplot_s_prilagatelnym(bolshaja, 'dorogoj')
+```
+
+```{r}
+# esli hotshetsa ogranitsit spisok utshastnikoc
+sozdai_barplot_s_prilagatelnym(bolshaja, 'dorogoj', spisok_utshastnikov=c('niania', 'snizu vverh', 'zhivotnye'))
+```
+
+
+```{r}
+# esli hotshetsa pokazat protsenty
+sozdai_barplot_s_prilagatelnym(bolshaja, 'dorogoj', protsenty=T)
+```
+
+
+```{r}
+# ili mozhet byt lutshe vot tak
+sozdai_barplot_s_prilagatelnym(bolshaja, 'dorogoj', protsenty=T, y_axis_all_percents=T)
+```
+
+```{r}
+# potom mozhno eshe napisat tsifry nad barami
+sozdai_barplot_s_prilagatelnym(bolshaja, 'dorogoj', protsenty=T, y_axis_all_percents=T, freqlabels=T)
+```
+
+```{r}
+# ...ili eshe
+sozdai_barplot_s_prilagatelnym(bolshaja, 'dorogoj', protsenty=T, y_axis_all_percents=T, freqlabels=T, nlabels=T)
+```
+
+
+## Только таблица
+
+Если вас интересуется только таблица, можно вот так:
+
+```{r}
+sozdai_tablitsa_s_prilagatelnym(bolshaja, 'dorogoj')
+```
+
+
+
+
