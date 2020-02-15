@@ -70,3 +70,108 @@ sozdai_tablitsa_s_utshastnikamki <- function(dannyje, spisok_utshastnikov){
   subsetted <- subset(dannyje, participants %in% spisok_utshastnikov)
   return(table(subsetted$participants, subsetted$otdelno))
 }
+
+
+
+#' Returns a table filtered by adj
+#'
+#'
+#' @param dannyje bolshaja, bolshaja_moj, bolshaja_bez_moj etc..
+#' @param this_adj the adjective in question (dorogoj, milyj...)
+#'
+#'
+#' @export 
+#' @examples
+#' 
+#' # Example 1:
+#' 
+#' tablitsa  <-  sozdai_tablitsa_s_prilagatelnym(bolshaja, 'dorogoj')
+#' 
+#' 
+sozdai_tablitsa_s_prilagatelnym <- function(dannyje, this_adj){
+  subsetted <- subset(bolshaja, adj==this_adj)
+  return(table(subsetted$participants, subsetted$otdelno))
+}
+
+#' set the theme of a plot
+#' 
+#' @import ggplot2 
+
+setTheme <- function(thispl, y_axis_all_percents){
+  pl <- thispl + 
+         coord_flip( ) + 
+         theme(axis.text.x = element_text(angle=90, hjust=1))
+  if(y_axis_all_percents){
+     pl <- pl + scale_y_continuous(limits=c(0,100))
+  }
+  return(pl)
+}
+
+#' Returns a barplot of adjectives
+#'
+#'
+#' @param dannyje bolshaja, bolshaja_moj, bolshaja_bez_moj etc..
+#' @param adj the adjective ('dorogoj', 'milyj'...)
+#' @param spisok_utshastnikov vector of participants to include in the plot (if not set, then all)
+#' @param protsenty whether to use percentages instead of counts
+#' @param freqlabels whether to print labels of percentages on the plot
+#' @param nlabels whether to print labels of counts on the plot
+#' @param y_axis_all_percents whether to use scale of 0 to 100 with percentages 
+#'
+#' @import ggplot2 
+#' @import dplyr 
+#'
+#' @export 
+#' @examples
+#' 
+#' 
+#'# samyj prostoi:
+#' sozdai_barplot_s_prilagatelnym(bolshaja, 'dorogoj')
+#'
+#'# esli hotshetsa ogranitsit spisok utshastnikoc
+#'sozdai_barplot_s_prilagatelnym(bolshaja, 'dorogoj', spisok_utshastnikov=c('niania', 'snizu vverh', 'zhivotnye'))
+#'
+#'# esli hotshetsa pokazat protsenty
+#'sozdai_barplot_s_prilagatelnym(bolshaja, 'dorogoj', protsenty=T)
+#'
+#'# ili mozhet byt lutshe vot tak
+#'sozdai_barplot_s_prilagatelnym(bolshaja, 'dorogoj', protsenty=T, y_axis_all_percents=T)
+#'
+#'# potom mozhno eshe napisat tsifry nad barami
+#'sozdai_barplot_s_prilagatelnym(bolshaja, 'dorogoj', protsenty=T, y_axis_all_percents=T, freqlabels=T)
+#'
+#'# ...ili eshe
+#'sozdai_barplot_s_prilagatelnym(bolshaja, 'dorogoj', protsenty=T, y_axis_all_percents=T, freqlabels=T, nlabels=T)
+#'
+sozdai_barplot_s_prilagatelnym <- function(dannyje, this_adj, spisok_utshastnikov = c(), protsenty = F, freqlabels = F, nlabels = F, y_axis_all_percents = F){
+  tab <- bolshaja %>% filter(adj == this_adj)
+  if(length(spisok_utshastnikov) > 0){
+    tab <- tab %>% filter(participants %in% spisok_utshastnikov)
+  }
+  tab <- tab %>% count(participants, otdelno) %>%
+    group_by(otdelno) %>%
+    mutate(freq = n / sum(n) *100) %>%
+    ungroup %>%
+    arrange(desc(freq))
+  if(protsenty){
+    pl <- tab %>% ggplot(aes(x = participants, y=freq) ) 
+  }
+  else{
+    pl <- tab %>% ggplot(aes(x = participants, y=n) )
+  }
+
+  pl <- pl +geom_bar(stat='identity') + facet_wrap(~otdelno)  
+
+  if(nlabels && freqlabels){
+    pl <- pl  + geom_text(aes(label=paste0("n=",n," (",round(freq,1)," %)")),  hjust=-0.3)
+  }
+  else if(freqlabels){
+    pl <- pl  + geom_text(aes(label=paste0(round(freq,1), ' %')),  hjust=-0.3)
+  }
+  else if(nlabels){
+    pl <- pl  + geom_text(aes(label=paste0('n=',n)),  hjust=-0.3)
+  }
+  return (setTheme(pl, y_axis_all_percents))
+}
+
+
