@@ -14,5 +14,6 @@ output:
 - [Как изменить названия категорий](vignettes/categories.html)
 - [Барплоты с ограничениями](vignettes/barploty1.html)
 - [Еще барплоты](vignettes/tablitsi_i_dr.html)
+- [Еще барплоты 2](vignettes/barploty3.html)
 
 
