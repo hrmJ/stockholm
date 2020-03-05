@@ -1,0 +1,65 @@
+Инструкции 5.3.2020
+====================
+
+Важно: обдновите библиотеку:
+
+
+```{r, results='hide'}
+
+library(remotes)
+install_github("hrmj/stockholm", upgrade=T, dependencies = FALSE, force=T) 
+detach("package:stockholm", unload=TRUE)
+library(stockholm)
+
+```
+
+
+
+Обычные подготовительные шаги:
+
+```{r}
+library(stockholm)
+library(dplyr)
+library(ggplot2)
+bolshaja$participants[bolshaja$participants=='zveri']<-'zhivotnye'
+bolshaja$participants[bolshaja$participants=='prochee']<-'neopoznannye'
+bolshaja_moj<-subset(bolshaja, grepl("moj",pattern))
+bolshaja_bez_moj<-subset(bolshaja,!grepl("moj",pattern))
+```
+
+
+
+1) когда анализируются только любимый, милый, дорогой и родной без мой со
+ следующими участниками: родители дети, дети родители, брат сестра,
+ родственники, муж жена, няня;
+
+
+```{r}
+
+pril <- c('lubimyj', 'milyj', 'dorogoj', 'rodnoj')
+utsh <-  c('roditeli deti', 'deti roditeli', 'brat sestra', 'rodstvenniki', 'muzh zhena', 'njanja')
+
+sozdai_barplot_s_prilagatelnym(bolshaja_bez_moj, spisok_prilagatelnyh = pril , spisok_utshastnikov=utsh, protsenty=T, freqlabels=T)
+
+
+```
+
+
+3)милый мой, родной мой, дорогой мой, любимый мой со следующими участниками:
+родители дети, дети родители, брат сестра, родственники, муж жена, няня;
+
+
+```{r}
+
+library(dplyr)
+
+pril <- c('lubimyj', 'milyj', 'dorogoj', 'rodnoj')
+utsh <-  c('roditeli deti', 'deti roditeli', 'brat sestra', 'rodstvenniki', 'muzh zhena', 'njanja')
+
+current_subset <- bolshaja %>% filter(pattern == '[adj] moj')
+
+sozdai_barplot_s_prilagatelnym(current_subset, spisok_prilagatelnyh = pril , spisok_utshastnikov=utsh, protsenty=T, freqlabels=T)
+
+
+```
+
