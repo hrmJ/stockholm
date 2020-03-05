@@ -144,8 +144,8 @@ setTheme <- function(thispl, y_axis_all_percents){
 #'# ...ili eshe
 #'sozdai_barplot_s_prilagatelnym(bolshaja, 'dorogoj', protsenty=T, y_axis_all_percents=T, freqlabels=T, nlabels=T)
 #'
-sozdai_barplot_s_prilagatelnym <- function(dannyje, this_adj, spisok_utshastnikov = c(), protsenty = F, freqlabels = F, nlabels = F, y_axis_all_percents = F){
-  tab <- bolshaja %>% filter(adj == this_adj)
+sozdai_barplot_s_prilagatelnym <- function(dannyje, spisok_prilagatelnyh, spisok_utshastnikov = c(), protsenty = F, freqlabels = F, nlabels = F, y_axis_all_percents = F){
+  tab <- dannyje %>% filter(adj %in% spisok_prilagatelnyh)
   if(length(spisok_utshastnikov) > 0){
     tab <- tab %>% filter(participants %in% spisok_utshastnikov)
   }
